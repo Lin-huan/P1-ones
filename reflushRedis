@@ -1,0 +1,12 @@
+#!/bin/bash
+conn="ssh -p 8022 -t zhangjinxia@119.23.130.213 /bin/bash"
+
+$conn << 'EOF'
+ratelimitStr=$(cat /data/app/project-api/P3052/conf/config.json | grep redis_db_ratelimit)
+echo $ratelimitStr
+port=${ratelimitStr##*:}
+echo $port
+db=${port%,*}
+echo $db
+redis-cli -n $db flushdb
+EOF
